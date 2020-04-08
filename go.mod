@@ -1,4 +1,4 @@
-module github.com/regen-network/cosmosd
+module github.com/sentrylink/cosmosd
 
 go 1.12
 
