@@ -1,6 +1,4 @@
-# Cosmos Upgrade Manager
-
-[![CircleCI](https://circleci.com/gh/regen-network/cosmos-upgrade-manager/tree/master.svg?style=svg)](https://circleci.com/gh/regen-network/cosmos-upgrade-manager/tree/master) [![codecov](https://codecov.io/gh/regen-network/cosmos-upgrade-manager/branch/master/graph/badge.svg)](https://codecov.io/gh/regen-network/cosmos-upgrade-manager)
+# Anatha Upgrade Manager
 
 This is a tiny little shim around Cosmos SDK binaries that use the upgrade
 module that allows for smooth and configurable management of upgrading
@@ -21,8 +19,8 @@ print anything to output (unless it dies before executing a binary).
 Configuration will be passed in the followingenvironmental variables:
 
 * `DAEMON_HOME` is the location where upgrade binaries should be kept (can
-be `$HOME/.gaiad` or `$HOME/.xrnd`)
-* `DAEMON_NAME` is the name of the binary itself (eg. `xrnd`, `gaiad`)
+be `$HOME/.anathad`)
+* `DAEMON_NAME` is the name of the binary itself (eg. `anathad`)
 * `DAEMON_ALLOW_DOWNLOAD_BINARIES` (optional) if set to `on` will enable auto-downloading of new binaries
 (for security reasons, this is intended for fullnodes rather than validators)
 * `DAEMON_RESTART_AFTER_UPGRADE` (optional) if set to `on` it will restart a the sub-process with the same args
@@ -46,19 +44,19 @@ constrolled by it. Under this folder, we will see the following:
 ```
 
 Each version of the chain is stored under either `genesis` or `upgrades/<name>`, which holds `bin/$DAEMON_NAME`
-along with any other needed files (maybe the cli client? maybe some dlls?). `current` is a symlink to the currently
+along with any other needed files (maybe the cli client?). `current` is a symlink to the currently
 active folder (so `current/bin/$DAEMON_NAME` is the binary)
 
 Note: the `<name>` after `upgrades` is the URI-encoded name of the upgrade as specified in the upgrade module plan.
 
 Please note that `$DAEMON_HOME/upgrade_manager` just stores the *binaries* and associated *program code*.
 The `upgrader` binary can be stored in any typical location (eg `/usr/local/bin`). The actual blockchain
-program will store it's data under `$GAIA_HOME` etc, which is independent of the `$DAEMON_HOME`. You can
-choose to export `GAIA_HOME=$DAEMON_HOME` and then end up with a configuation like the following, but this
+program will store it's data under `$ANATHAD_HOME` etc, which is independent of the `$DAEMON_HOME`. You can
+choose to export `ANATHAD_HOME=$DAEMON_HOME` and then end up with a configuation like the following, but this
 is left as a choice to the admin for best directory layout.
 
 ```
-- .gaiad
+- .anathad
   - config
   - data
   - upgrade_manager
@@ -79,7 +77,7 @@ prepare the genesis binary tar file. In fact, they may offer a tar file will all
 for those who wish to sync a fullnode from start.
 
 The `DAEMON` specific code, like the tendermint config, the application db, syncing blocks, etc is done as normal.
-The same eg. `GAIA_HOME` directives and command-line flags work, just the binary name is different.
+The same eg. `ANATHAD_HOME` directives and command-line flags work, just the binary name is different.
 
 ## Upgradeable Binary Specification
 
@@ -95,10 +93,6 @@ a `binaries` key as described above
 The name (first regexp) will be used to select the new binary to run. If it is present,
 the current subprocess will be killed, `current` will be upgraded to the new directory, 
 and the new binary will be launched.
-
-**Question** should we just kill the upgrade manager after it does the updates?
-so it gets a clean restart and just runs the new binary (under `current`).
-it should be safe to restart (as a service).
 
 ## Auto-Download
 
@@ -118,7 +112,7 @@ as JSON under the `"binaries"` key, eg:
 ```json
 {
   "binaries": {
-    "linux/amd64":"https://example.com/gaia.zip?checksum=sha256:aec070645fe53ee3b3763059376134f058cc337247c978add178b6ccdfb0019f"
+    "linux/amd64":"https://example.com/anatha.zip?checksum=sha256:aec070645fe53ee3b3763059376134f058cc337247c978add178b6ccdfb0019f"
   }
 }
 ```
