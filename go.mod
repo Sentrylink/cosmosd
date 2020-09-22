@@ -1,4 +1,4 @@
-module github.com/sentrylink/cosmosd
+module github.com/anathatech/cosmosd
 
 go 1.12
 

@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"github.com/sentrylink/cosmosd/lib"
+	"github.com/anathatech/cosmosd/lib"
 	"os"
 )
 
